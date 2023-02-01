@@ -25,8 +25,7 @@ public class Player : MonoBehaviour
 
         if(_spawnManager == null)
         {
-            Debug.LogError("Spawn Manager is equal to null");
-        }
+            Debug.LogError("Spawn Manager is equal to null");        }
 
         transform.position = new Vector3(0, 0, 0);
     }
