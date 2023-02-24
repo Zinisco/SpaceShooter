@@ -5,39 +5,58 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject enemyPrefab;
-    [SerializeField]
-    private GameObject enemyContainer;
+    private GameObject _enemyPrefab;
 
-    private bool stopSpawning = false;
+    [SerializeField]
+    private GameObject _enemyContainer;
+
+    [SerializeField]
+    private GameObject _pickUpPrefab;
+
+    [SerializeField]
+    private GameObject[] powerUps;
+
+    private bool _countdownDone = false;
+
+    private bool _stopSpawning = false;
 
     // Start is called before the first frame update
-    void Start()
+    public void StartSpawning()
     {
-        StartCoroutine(SpawnRoutine());
+      StartCoroutine(SpawnEnemyRoutine());
+      StartCoroutine(SpawnPickUpRoutine());   
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator SpawnEnemyRoutine()
     {
-        
-    }
-
-    IEnumerator SpawnRoutine()
-    {
-        while(stopSpawning == false)
+        while(_stopSpawning == false)
         {
+            yield return new WaitForSeconds(3f);
             float randomX = Random.Range(-8f, 8f);
             Vector3 posToSpawn = new Vector3(randomX, 7, 0);
 
-            GameObject newEnemy = Instantiate(enemyPrefab, posToSpawn, Quaternion.identity);
-            newEnemy.transform.parent = enemyContainer.transform;
+            GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
+            newEnemy.transform.parent = _enemyContainer.transform;
             yield return new WaitForSeconds(5.0f);
+        }
+    }
+
+    IEnumerator SpawnPickUpRoutine()
+    {
+        while (_stopSpawning == false)
+        {
+            yield return new WaitForSeconds(2f);
+            float randomX = Random.Range(-8f, 8f);
+            Vector3 posToSpawn = new Vector3(randomX, 7, 0);
+
+            int randPowerUp = Random.Range(0, 3);
+            Instantiate(powerUps[randPowerUp], posToSpawn, Quaternion.identity);
+            yield return new WaitForSeconds(Random.Range(3f,7f));
         }
     }
 
     public void OnPlayerDeath()
     {
-        stopSpawning = true;
+        _stopSpawning = true;
     }
 }

@@ -5,17 +5,37 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField]
-    private float enemySpeed = 4f;
+    private float _enemySpeed = 4f;
 
-    // Start is called before the first frame update
-    void Start()
+    private Player _player;
+
+    [SerializeField]
+    private GameObject _explosionObject;
+
+    [SerializeField]
+    private GameObject _shipObject;
+
+    [SerializeField]
+    private GameObject _laserPrefab;
+
+    private void OnEnable()
     {
+        _explosionObject.SetActive(false);
+        _shipObject.SetActive(true);
+        StartCoroutine(EnemyFireLaser());
+    }
+
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.down * enemySpeed * Time.deltaTime);
+        transform.Translate(Vector3.down * _enemySpeed * Time.deltaTime);
 
         if(transform.position.y < -5)
         {
@@ -29,19 +49,50 @@ public class Enemy : MonoBehaviour
         Debug.Log("Hit: " + other.transform.name);
         if(other.gameObject.tag == "Player")
         {
-            Player player = other.transform.GetComponent<Player>();
-            if (player != null)
+            
+            if (_player != null)
             {
-                other.transform.GetComponent<Player>().Damage();
+                _player.Damage();
+            }
+        
+            _explosionObject.SetActive(true);
+            _shipObject.SetActive(false);
+            _enemySpeed = 0;
+            Destroy(gameObject,1.4f);
+        }
+    }
+
+    public void DestroyEnemyByLaser()
+    {
+            if (_player != null)
+            {
+                _player.AddScore(10);
+
             }
 
-            Destroy(gameObject);
-        }
+            _explosionObject.SetActive(true);
+            _shipObject.SetActive(false);
+            _enemySpeed = 0;
+            Destroy(GetComponent<BoxCollider>());
+            Destroy(gameObject, 1.4f);
+        
+    }
 
-        else if (other.gameObject.tag == "Laser")
+    IEnumerator EnemyFireLaser()
+    {
+        while (true)
         {
-            Destroy(other.gameObject);
-            Destroy(gameObject);
+            Vector3 offset = new Vector3(0, -1.7f, 0);
+            float randomTime = Random.Range(3f, 6f);
+            GameObject enemyLaser = Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+            Laser[] lasers = enemyLaser.GetComponentsInChildren<Laser>();
+
+            for (int i = 0; i < lasers.Length; i++)
+            {
+                lasers[i].AssignEnemyLaser();
+            }
+
+            yield return new WaitForSeconds(randomTime);
         }
     }
 }
