@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private GameObject _laserPrefab;
 
+    private bool _isEnemyAlive = true;
+
     private void OnEnable()
     {
         _explosionObject.SetActive(false);
@@ -54,11 +56,28 @@ public class Enemy : MonoBehaviour
             {
                 _player.Damage();
             }
-        
+
+            _isEnemyAlive = false;
             _explosionObject.SetActive(true);
             _shipObject.SetActive(false);
             _enemySpeed = 0;
             Destroy(gameObject,1.4f);
+        }
+
+        if(other.gameObject.tag == "Missile")
+        {
+            if (_player != null)
+            {
+                _player.AddScore(10);
+
+            }
+
+            _isEnemyAlive = false;
+            _explosionObject.SetActive(true);
+            _shipObject.SetActive(false);
+            _enemySpeed = 0;
+            Destroy(other.gameObject);
+            Destroy(gameObject, 1.4f);
         }
     }
 
@@ -70,6 +89,7 @@ public class Enemy : MonoBehaviour
 
             }
 
+            _isEnemyAlive = false;
             _explosionObject.SetActive(true);
             _shipObject.SetActive(false);
             _enemySpeed = 0;
@@ -80,7 +100,7 @@ public class Enemy : MonoBehaviour
 
     IEnumerator EnemyFireLaser()
     {
-        while (true)
+        while (_isEnemyAlive)
         {
             Vector3 offset = new Vector3(0, -1.7f, 0);
             float randomTime = Random.Range(3f, 6f);

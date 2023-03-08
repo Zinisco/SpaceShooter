@@ -15,11 +15,15 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text _countdownTimerText;
 
+    [SerializeField] private TMP_Text _ammoCountText;
+
     [SerializeField]
     private Sprite[] _livesSprite;
 
     [SerializeField]
     private Image _livesImage;
+
+    [SerializeField] private Slider _fuelVisualSlider; 
 
     private GameManager _gameManager;
     private SpawnManager _spawnManager;
@@ -37,8 +41,10 @@ public class UIManager : MonoBehaviour
         _restartGameText.gameObject.SetActive(false);
         _gameOverText.gameObject.SetActive(false);
         _scoreText.text = "Score: " + 0;
+        _ammoCountText.text = "Ammo: " + 15;
+        _fuelVisualSlider.value = 10;
 
-        if(_gameManager == null)
+        if (_gameManager == null)
         {
             Debug.LogError("Game Manager is null");
         }
@@ -67,9 +73,19 @@ public class UIManager : MonoBehaviour
 
     }
 
+    public void UpdateFuelAmount(float fuelAmount)
+    {
+        _fuelVisualSlider.value = fuelAmount;
+    }
+
     public void UpdateScoreText(int playerScore)
     {
         _scoreText.text = "Score: " + playerScore.ToString();
+    }
+
+    public void UpdateAmmoCount(int playerAmmoCount)
+    {
+        _ammoCountText.text = "Ammo: " + playerAmmoCount.ToString();
     }
 
     public void UpdateLivesImage(int currentPlayerLives)

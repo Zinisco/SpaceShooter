@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6833099907398278940}
   - component: {fileID: 3999365986011875244}
   m_Layer: 0
-  m_Name: Triple Shot Power-Up
+  m_Name: Reload Power-Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,8 +48,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pickUpSpeed: 3
-  _pickUpID: 0
+  _pickUpID: 3
   _clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  weight: 10
 --- !u!65 &6833099907398278940
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -11,20 +11,19 @@ public class SpawnManager : MonoBehaviour
     private GameObject _enemyContainer;
 
     [SerializeField]
-    private GameObject _pickUpPrefab;
+    private GameObject[] _commonPickUps, _uncommonPickUps, _rarePickUps;
 
     [SerializeField]
-    private GameObject[] powerUps;
-
-    private bool _countdownDone = false;
+    [Range(0, 100)]
+    private int _commonPickUpPercent, _uncommonPickUpPercent;
 
     private bool _stopSpawning = false;
 
     // Start is called before the first frame update
     public void StartSpawning()
     {
-      StartCoroutine(SpawnEnemyRoutine());
-      StartCoroutine(SpawnPickUpRoutine());   
+        StartCoroutine(SpawnEnemyRoutine());
+        StartCoroutine(SpawnPickUpRoutine());
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -34,10 +33,9 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(3f);
             float randomX = Random.Range(-8f, 8f);
             Vector3 posToSpawn = new Vector3(randomX, 7, 0);
-
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
             newEnemy.transform.parent = _enemyContainer.transform;
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(Random.Range(2f,5f));
         }
     }
 
@@ -46,17 +44,39 @@ public class SpawnManager : MonoBehaviour
         while (_stopSpawning == false)
         {
             yield return new WaitForSeconds(2f);
-            float randomX = Random.Range(-8f, 8f);
-            Vector3 posToSpawn = new Vector3(randomX, 7, 0);
-
-            int randPowerUp = Random.Range(0, 3);
-            Instantiate(powerUps[randPowerUp], posToSpawn, Quaternion.identity);
-            yield return new WaitForSeconds(Random.Range(3f,7f));
+            SpawnRandomWeightedPickUp();
+            yield return new WaitForSeconds(Random.Range(3f,5f));      
         }
     }
 
     public void OnPlayerDeath()
     {
         _stopSpawning = true;
+    }
+
+    public void SpawnRandomWeightedPickUp()
+    {
+        float randomX = Random.Range(-8f, 8f);
+        Vector3 posToSpawn = new Vector3(randomX, 7, 0);
+
+        float weightedValue = Random.Range(0, 100);
+        Debug.Log("Weighted Value: " + weightedValue);
+
+        GameObject[] ObjectsToSpawn;
+
+        if(weightedValue <= _commonPickUpPercent)
+        {
+            ObjectsToSpawn = _commonPickUps;
+        }
+        else if(weightedValue <= _commonPickUpPercent + _uncommonPickUpPercent && weightedValue > _commonPickUpPercent)
+        {
+            ObjectsToSpawn = _uncommonPickUps;
+        }
+        else
+        {
+            ObjectsToSpawn = _rarePickUps;
+        }
+
+        Instantiate(ObjectsToSpawn[Random.Range(0, ObjectsToSpawn.Length)], posToSpawn, Quaternion.identity);
     }
 }

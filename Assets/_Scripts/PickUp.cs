@@ -37,10 +37,19 @@ public class PickUp : MonoBehaviour
                         player.ActivateTripleShot();
                         break;
                     case 1: 
-                        player.ActivateSpeedBoost();
+                        player.RefillSpeedBoost();
                         break;
                     case 2:
                         player.ActivateShields();
+                        break;
+                    case 3:
+                        player.Reload();
+                        break;
+                    case 4:
+                        player.HealPlayer();
+                        break;
+                    case 5:
+                        player.ActivateMissile();
                         break;
                     default:
                         Debug.Log("Default value");

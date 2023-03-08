@@ -79,6 +79,7 @@ MonoBehaviour:
   _pickUpSpeed: 3
   _pickUpID: 1
   _clip: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  weight: 10
 --- !u!1001 &4253580350774414584
 PrefabInstance:
   m_ObjectHideFlags: 0
