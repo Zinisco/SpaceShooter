@@ -6,12 +6,15 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 5f;
+
     private float _speedMultiplier = 1f;
 
     [SerializeField]
     private float _reloadTime = 0.5f;
+
     [SerializeField]
-    private int _ammoCount = 15;
+    private int _ammoCount = 25;
+
     private float _fuel = 10f;
 
     [SerializeField]
@@ -178,11 +181,10 @@ public class Player : MonoBehaviour
             {
                 _ammoCount--;
                 _uiManager.UpdateAmmoCount(_ammoCount);
+                _audioSource.Play();
                 Instantiate(_bulletPrefab, transform.position + offset, Quaternion.identity);
             }
         }
-
-        _audioSource.Play();
 
       _bulletCanFire = false;
 
@@ -293,8 +295,19 @@ public class Player : MonoBehaviour
 
     public void Reload()
     {
-        _ammoCount = 15;
+        _ammoCount = 25;
         _uiManager.UpdateAmmoCount(_ammoCount);
+    }
+
+    public void ReduceSpeed()
+    {
+        _speed = 2.5f;
+        StartCoroutine(DisableNegativePowerUp());
+    }
+
+    public void NoSpeed()
+    {
+        _speed = 0;
     }
 
     IEnumerator BulletReloadTime()
@@ -313,6 +326,12 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(5.0f);
         _isMissileActive = false;
+    }
+
+    IEnumerator DisableNegativePowerUp()
+    {
+        yield return new WaitForSeconds(5.0f);
+        _speed = 5f; 
     }
 
 }

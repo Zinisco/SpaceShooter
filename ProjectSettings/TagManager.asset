@@ -7,16 +7,17 @@ TagManager:
   - Enemy
   - Laser
   - Missile
+  - EnemyLaser
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Post-Process
-  - 
-  - 
+  - PickUp
+  - Laser
   - 
   - 
   - 

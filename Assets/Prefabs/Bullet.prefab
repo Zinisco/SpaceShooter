@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1142981389039375907}
   - component: {fileID: 9211132604947034857}
   - component: {fileID: 2973907717919137284}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Laser
   m_Icon: {fileID: 0}
@@ -126,6 +126,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ebea87512ca3d9345ae846c2167b9d8b, type: 3}
       propertyPath: m_Name
       value: Bulllet
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ebea87512ca3d9345ae846c2167b9d8b, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ebea87512ca3d9345ae846c2167b9d8b, type: 3}

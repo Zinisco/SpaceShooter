@@ -7,69 +7,55 @@ public class Laser : MonoBehaviour
     [SerializeField]
     private float _laserSpeed = 5f;
 
-    private bool _isEnemyLaser = false;
+    private bool laserIsReverse = false;
 
+    private Player _player;
+
+    private void Start()
+    {
+        _player = GameObject.Find("Player").GetComponent<Player>();
+
+        if(_player == null)
+        {
+            Debug.LogError("Player is Null");
+        }
+    }
 
     void Update()
     {
-        if(_isEnemyLaser)
+        if (gameObject.tag == "EnemyLaser" && laserIsReverse == false)
         {
             transform.Translate(Vector3.down * _laserSpeed * Time.deltaTime);
-
-            if (transform.position.y < -8f)
-            {
-                if (transform.parent != null)
-                {
-                    Destroy(transform.parent.gameObject);
-                }
-
-                Destroy(gameObject);
-            }
+        }
+        else if(gameObject.tag == "EnemyLaser" && laserIsReverse)
+        {
+            transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime);
         }
         else
         {
             transform.Translate(Vector3.up * _laserSpeed * Time.deltaTime);
-
-            if (transform.position.y > 8f)
-            {
-                if (transform.parent != null)
-                {
-                    Destroy(transform.parent.gameObject);
-                }
-
-                Destroy(gameObject);
-            }
         }
-
-    }
-
-    public void AssignEnemyLaser()
-    {
-        _isEnemyLaser = true;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player" && _isEnemyLaser)
+        if (other.gameObject.tag == "Player" && gameObject.tag == "EnemyLaser")
         {
-            Player player = other.gameObject.GetComponent<Player>();
-
-            if (player != null)
+            if (_player != null)
             {
-                player.Damage();
+                _player.Damage();
                 Destroy(gameObject);
             }
         }
+    }
 
-        if(other.gameObject.tag == "Enemy" && _isEnemyLaser == false)
-        {
-            Enemy enemy = other.gameObject.GetComponent<Enemy>();
+    public void ReverseLaserDirection()
+    {
+        laserIsReverse = true;
+    }
 
-            if(enemy != null)
-            {
-                enemy.DestroyEnemyByLaser();
-                Destroy(gameObject);
-            }
-        }
+    public void ForwardLaserDirection()
+    {
+        laserIsReverse = false;
     }
 }
