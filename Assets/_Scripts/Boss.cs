@@ -5,7 +5,7 @@ using UnityEngine;
 public class Boss : MonoBehaviour
 {
     [SerializeField]
-    private int _bossHealth = 20;
+    private int _bossHealth = 30;
 
     [SerializeField]
     private int _bossSpeed = 3;

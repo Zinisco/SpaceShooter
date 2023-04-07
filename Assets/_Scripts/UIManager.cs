@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
 
 
         _bossVisualSlider.gameObject.SetActive(false);
-        _bossVisualSlider.value = 20;
+        _bossVisualSlider.value = 30;
 
         if (_gameManager == null)
         {

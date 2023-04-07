@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e96fc5e3bb541c47940a6666b086c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bossHealth: 20
+  _bossHealth: 30
   _bossSpeed: 3
   _enemyLaserPrefab: {fileID: 4921809237748867285, guid: 04695a819fea26e42b956f94d7456181, type: 3}
   _explosionPrefab: {fileID: 6587676804958833101}
