@@ -18,17 +18,20 @@ public class PickUp : MonoBehaviour
     private float _moveSpeed = 5;
 
     private Player _player;
+    private Vector3 directionOfPlayer;
 
     private void Start()
     {
+        _player = GameObject.Find("Player").GetComponent<Player>();
         _explosionObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        directionOfPlayer = (gameObject.transform.position - _player.gameObject.transform.position).normalized;
 
-        if(transform.position.y < - 5.5f)
+        if (transform.position.y < - 5.5f)
         {
             Destroy(gameObject);
         }
@@ -47,34 +50,32 @@ public class PickUp : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Player player = other.transform.GetComponent<Player>();
-
             AudioSource.PlayClipAtPoint(_clip, transform.position);
 
-            if (player != null)
+            if (_player != null)
             {
                 switch(_pickUpID)
                 {
                     case 0:
-                        player.ActivateTripleShot();
+                        _player.ActivateTripleShot();
                         break;
                     case 1: 
-                        player.RefillSpeedBoost();
+                        _player.RefillSpeedBoost();
                         break;
                     case 2:
-                        player.ActivateShields();
+                        _player.ActivateShields();
                         break;
                     case 3:
-                        player.Reload();
+                        _player.Reload();
                         break;
                     case 4:
-                        player.HealPlayer();
+                        _player.HealPlayer();
                         break;
                     case 5:
-                        player.ActivateMissile();
+                        _player.ActivateMissile();
                         break;
                     case 6:
-                        player.ReduceSpeed();
+                        _player.ReduceSpeed();
                         break;
                     default:
                         Debug.Log("Default value");
@@ -103,8 +104,6 @@ public class PickUp : MonoBehaviour
 
     public void MoveTowardsPlayer()
     {
-        Vector3 direction = gameObject.transform.position - _player.transform.position;
-        direction = direction.normalized;
-        gameObject.transform.position -= direction * Time.deltaTime * _moveSpeed;
+        gameObject.transform.position -= directionOfPlayer * Time.deltaTime * _moveSpeed;
     }
 }
